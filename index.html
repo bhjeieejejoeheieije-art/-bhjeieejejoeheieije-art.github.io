@@ -2,277 +2,258 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ClikCoin - Monetisasi Video</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>ClikCoin TikTok</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { 
-  font-family: 'Segoe UI', Arial; 
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); 
-  color: #eee; 
-  padding: 15px; 
-  min-height: 100vh;
-}
-.container { max-width: 600px; margin: 0 auto; }
-.logo { 
-  color: gold; 
-  font-size: 32px; 
-  font-weight: bold; 
-  text-align: center; 
-  margin-bottom: 20px;
-  text-shadow: 0 0 10px gold;
-}
-.video-wrapper { 
-  position: relative; 
-  border-radius: 20px; 
+  background: #000; 
   overflow: hidden; 
-  border: 3px solid gold; 
-  box-shadow: 0 0 25px rgba(255,215,0,0.5);
+  font-family: Arial; 
 }
-#videoPlayer { width: 100%; display: block; background: #000; min-height: 200px; }
-#adBox { 
-  background: rgba(0,0,0,0.95); 
-  color: gold; 
-  display: none; 
-  position: absolute; 
-  width: 100%; 
-  height: 100%; 
-  top: 0; 
-  left: 0; 
-  z-index: 10; 
-  align-items: center; 
-  justify-content: center; 
-  flex-direction: column; 
+.feed {
+  height: 100vh;
+  width: 100vw;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
 }
-.btn { 
-  background: linear-gradient(90deg, #FFD700, #FFA500); 
-  color: #000; 
-  padding: 16px; 
-  border: none; 
-  border-radius: 12px; 
-  cursor: pointer; 
-  font-weight: bold; 
-  margin-top: 15px; 
-  width: 100%; 
-  font-size: 16px;
+.video-item {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  scroll-snap-align: start;
+  background: #000;
 }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.badge { color: gold; font-weight: bold; margin-top: 10px; text-align: center; }
-.card { 
-  background: rgba(26,26,26,0.8); 
-  padding: 18px; 
-  border-radius: 15px; 
-  margin-top: 20px; 
-  font-size: 14px; 
-  border: 1px solid rgba(255,215,0,0.3);
+.video-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.card h3 { color: gold; margin-bottom: 12px; }
-.koin { color: #ffcc00; font-weight: bold; font-size: 18px; }
+.overlay {
+  position: absolute;
+  bottom: 80px;
+  left: 15px;
+  color: white;
+  z-index: 5;
+}
+.overlay h3 { font-size: 18px; margin-bottom: 5px; }
+.overlay p { font-size: 14px; opacity: 0.9; }
+.right-menu {
+  position: absolute;
+  right: 15px;
+  bottom: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  z-index: 5;
+}
+.right-menu button {
+  background: rgba(0,0,0,0.4);
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+}
+.ad-timer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.8);
+  color: gold;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  font-size: 22px;
+  z-index: 10;
+  display: none;
+}
+.admin-btn {
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
+  background: red;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 50px;
+  border: none;
+  z-index: 999;
+  font-size: 12px;
+}
 .admin-panel {
-  background: rgba(255,0,0,0.08);
-  border: 2px dashed gold;
-  padding: 15px;
-  border-radius: 12px;
-  margin-top: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.95);
+  z-index: 1000;
+  padding: 20px;
+  color: white;
+  display: none;
+  overflow-y: scroll;
 }
-.admin-panel input {
+.admin-panel input, .admin-panel textarea {
   width: 100%;
   padding: 10px;
-  margin-top: 8px;
-  margin-bottom: 12px;
-  border-radius: 8px;
+  margin: 8px 0;
+  background: #222;
   border: 1px solid gold;
-  background: #0d0d0d;
   color: white;
+  border-radius: 8px;
 }
-small { color: #aaa; font-size: 12px; }
 </style>
 </head>
 <body>
-<div class="container">
 
-<div class="logo">🪙 CLIKCOIN</div>
-<h2 style="text-align:center; margin-bottom:20px; color:#FFD700;">Monetisasi Konten Video</h2>
+<!-- FEED VIDEO KAYAK TIKTOK -->
+<div class="feed" id="feed"></div>
 
-<!-- VIDEO + IKLAN 5 DETIK -->
-<div class="video-wrapper">
-  <div id="adBox">
-    <p style="font-size: 26px; font-weight:bold;">📢 CLIKCOIN ADS</p>
-    <p style="margin-top: 12px; font-size:18px;">Skip dalam <span id="timer">5</span> detik</p>
-    <small>Nonton = Kamu + Kreator dapet Koin</small>
-  </div>
-  <video id="videoPlayer" controls poster="">
-    <source id="videoSource" src="" type="video/mp4">
-  </video>
+<!-- IKLAN 5 DETIK -->
+<div class="ad-timer" id="adBox">
+  <p>📢 CLIKCOIN ADS</p>
+  <p>Skip <span id="timer">5</span> detik</p>
+  <small>Nonton = Kreator +30 Koin</small>
 </div>
 
-<!-- PANEL ADMIN - MUNCUL KALO URL +?admin=true -->
-<div class="admin-panel" id="adminPanel" style="display:none;">
-  <h3>⚙️ PANEL ADMIN CLIKCOIN</h3>
-  <label>Link Video MP4 Langsung:</label>
-  <input type="text" id="inputVideo" placeholder="https://drive.google.com/uc?export=download&id=xxx">
+<!-- TOMBOL ADMIN -->
+<button class="admin-btn" onclick="bukaAdmin()">⚙️ Admin</button>
+
+<!-- PANEL ADMIN TAMBAH VIDEO -->
+<div class="admin-panel" id="adminPanel">
+  <h2>⚙️ PANEL ADMIN CLIKCOIN</h2>
+  <p>Tambah video baru. 1 baris = 1 video</p>
   
-  <label>Link Thumbnail JPG:</label>
-  <input type="text" id="inputThumb" placeholder="https://i.imgur.com/xxx.jpg">
+  <label>Link Video MP4 | Judul | Deskripsi</label>
+  <textarea id="inputVideo" rows="5" placeholder="https://drive.google.com/uc?export=download&id=xxx | Judul Video | Deskripsi singkat"></textarea>
   
-  <button class="btn" onclick="updateVideo()">Update Video Sekarang</button>
-  <small>Aturan: Link harus .mp4 langsung. YouTube gak bisa. Update → Semua user langsung ganti</small>
-</div>
-
-<!-- VIP PREMIUM -->
-<button id="vipButton" class="btn">👑 UPGRADE CLIKCOIN VIP - 15.000 Koin / 30 Hari</button>
-<p id="statusVip" class="badge"></p>
-<div id="vipBadgeBox" style="text-align:center; display:none; margin-top:15px;">
-  <p style="font-size:40px;">👑</p>
-  <p style="color:gold; font-weight:bold;">MEMBER VIP PREMIUM AKTIF</p>
-</div>
-
-<!-- DOMPET KREATOR -->
-<div class="card">
-  <h3>💰 DOMPET CLIKCOIN KREATOR</h3>
-  <p>Saldo Koin: <span class="koin" id="saldoKreator">0</span> Koin</p>
-  <small>Aturan: 1x iklan ditonton = Kreator +30 Koin, ClikCoin +70 Koin</small>
-  <button class="btn" id="wdButton" onclick="wdKreator()">Tarik Koin ke DANA</button>
-</div>
-
-<!-- SYARAT KETENTUAN -->
-<div class="card">
-  <h3>📜 SYARAT & KETENTUAN</h3>
-  <b>1. ClikCoin Ads:</b> Iklan 5 detik di awal. 1x per play.<br>
-  <b>2. ClikCoin Premium:</b> 15.000 Koin aktif 30 hari.<br>
-  <b>3. Member VIP:</b> Bebas iklan + badge 👑.<br>
-  <b>4. Smart Ads:</b> Dilarang klik iklan sendiri = banned.<br>
-  <b>5. Dompet Kreator:</b> Bagi 30:70. WD min 50rb Koin.
-</div>
-
+  <button onclick="tambahVideo()">Tambah Video</button>
+  <button onclick="tutupAdmin()" style="background:gray">Tutup</button>
+  <small>Aturan: Link harus .mp4 langsung dari Google Drive. Pisah pake tanda |</small>
+  
+  <h3 style="margin-top:20px;">Daftar Video Sekarang:</h3>
+  <div id="daftarVideo"></div>
 </div>
 
 <script>
-// ===== 1. AMBIL DATA DARI LOCALSTORAGE GITHUB PAGES =====
-let videoLink = localStorage.getItem('clikcoin_video') || '';
-let thumbLink = localStorage.getItem('clikcoin_thumb') || '';
-let isVip = localStorage.getItem('clikcoin_vip') === 'true'; 
-let iklanUdahMuncul = false;
+// ===== DATA VIDEO DISIMPEN DI LOCALSTORAGE =====
+let daftarVideo = JSON.parse(localStorage.getItem('clikcoin_videos')) || [
+  'https://drive.google.com/uc?export=download&id=1xVIDEO1 | Video Pertama | Ini contoh video ClikCoin',
+  'https://drive.google.com/uc?export=download&id=1xVIDEO2 | Video Kedua | Swipe ke atas buat ganti'
+];
+let isVip = localStorage.getItem('clikcoin_vip') === 'true';
 let saldoKreator = parseInt(localStorage.getItem('clikcoin_saldo') || '0');
+let videoKe = 0;
 
-const video = document.getElementById('videoPlayer');
-const videoSource = document.getElementById('videoSource');
-const adBox = document.getElementById('adBox');
-const vipButton = document.getElementById('vipButton');
-const statusVip = document.getElementById('statusVip');
-const saldoEl = document.getElementById('saldoKreator');
-const wdButton = document.getElementById('wdButton');
-const vipBadgeBox = document.getElementById('vipBadgeBox');
-
-// Set video awal
-videoSource.src = videoLink;
-video.poster = thumbLink;
-saldoEl.innerText = saldoKreator.toLocaleString('id-ID');
-
-// ===== 2. PANEL ADMIN UPDATE VIDEO =====
-const urlParams = new URLSearchParams(window.location.search);
-if(urlParams.get('admin') === 'true') {
-  document.getElementById('adminPanel').style.display = 'block';
-  document.getElementById('inputVideo').value = videoLink;
-  document.getElementById('inputThumb').value = thumbLink;
-}
-
-function updateVideo() {
-  let newVideo = document.getElementById('inputVideo').value.trim();
-  let newThumb = document.getElementById('inputThumb').value.trim();
+// ===== BIKIN FEED TIKTOK OTOMATIS =====
+function loadFeed() {
+  let feed = document.getElementById('feed');
+  feed.innerHTML = '';
   
-  if(!newVideo || !newVideo.includes('.mp4')) {
-    alert('Link video harus .mp4 langsung gob. Contoh: drive.google.com/uc?export=download&id=xxx');
-    return;
-  }
-  
-  localStorage.setItem('clikcoin_video', newVideo);
-  localStorage.setItem('clikcoin_thumb', newThumb);
-  alert('Video berhasil diupdate! Refresh halaman buat cek');
-  location.reload();
+  daftarVideo.forEach((item, index) => {
+    let [link, judul, deskripsi] = item.split(' | ');
+    
+    let div = document.createElement('div');
+    div.className = 'video-item';
+    div.innerHTML = `
+      <video src="${link}" playsinline loop></video>
+      <div class="overlay">
+        <h3>${judul || 'ClikCoin Video'}</h3>
+        <p>${deskripsi || ''}</p>
+      </div>
+      <div class="right-menu">
+        <button>❤️</button>
+        <button>💬</button>
+        <button>↗️</button>
+        ${!isVip ? '<button onclick="upgradeVip()">👑</button>' : '<button>👑</button>'}
+      </div>
+    `;
+    feed.appendChild(div);
+  });
 }
+loadFeed();
 
-// ===== 3. LOGIKA VIP 30 HARI =====
-function cekVipExpired() {
-  let expired = localStorage.getItem('clikcoin_expired');
-  if(expired && Date.now() > parseInt(expired)) {
-    localStorage.removeItem('clikcoin_vip');
-    localStorage.removeItem('clikcoin_expired');
-    isVip = false;
-    alert('ClikCoin VIP expired. Top up 15.000 Koin lagi');
-    location.reload();
-  }
-}
-cekVipExpired();
-
-if(isVip) {
-  vipButton.style.display = 'none';
-  statusVip.innerText = '';
-  vipBadgeBox.style.display = 'block';
-} else {
-  statusVip.innerText = 'Status: Gratisan - Wajib nonton iklan 5 detik';
-  vipButton.onclick = function() {
-    if(confirm('Beli ClikCoin Premium 15.000 Koin via Dana/QRIS? Klik OK kalo udah bayar')) {
-      localStorage.setItem('clikcoin_vip', 'true');
-      localStorage.setItem('clikcoin_expired', Date.now() + 30*24*60*60*1000);
-      location.reload(); 
+// ===== AUTO PLAY + IKLAN 5 DETIK KAYAK TIKTOK =====
+const videos = document.querySelectorAll('video');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting) {
+      videos.forEach(v => v.pause());
+      entry.target.play();
+      
+      videoKe++;
+      // Munculin iklan tiap video ke-3 kalo bukan VIP
+      if(!isVip && videoKe % 3 === 0) {
+        munculIklan();
+      }
+    } else {
+      entry.target.pause();
     }
-  }
-}
+  });
+}, { threshold: 0.6 });
 
-// ===== 4. LOGIKA IKLAN 5 DETIK =====
-video.addEventListener('play', function() {
-  if(isVip) return;
-  if(iklanUdahMuncul) return;
-  if(video.currentTime > 3) return;
-  if(!videoLink) return;
+videos.forEach(v => observer.observe(v));
 
-  iklanUdahMuncul = true;
-  video.pause();
-  adBox.style.display = 'flex';
-  
+function munculIklan() {
+  let adBox = document.getElementById('adBox');
+  adBox.style.display = 'block';
   let detik = 5;
-  let timer = setInterval(function() {
-    document.getElementById('timer').innerText = detik;
+  document.getElementById('timer').innerText = detik;
+  
+  let timer = setInterval(() => {
     detik--;
+    document.getElementById('timer').innerText = detik;
     if(detik < 0) {
       clearInterval(timer);
       adBox.style.display = 'none';
-      video.play();
       
       saldoKreator += 30;
       localStorage.setItem('clikcoin_saldo', saldoKreator);
-      saldoEl.innerText = saldoKreator.toLocaleString('id-ID');
-      
-      if(saldoKreator >= 50000) {
-        wdButton.disabled = false;
-        wdButton.innerText = 'Tarik Koin ke DANA';
-      }
-      
-      // TEMPEL KODE GOOGLE ADSENSE DISINI
-      console.log('ClikCoin Ads selesai | Kreator +30 Koin');
+      console.log('Kreator +30 Koin');
     }
   }, 1000);
-});
-
-video.addEventListener('ended', function() {
-  iklanUdahMuncul = false;
-});
-
-// ===== 5. LOGIKA WD KREATOR =====
-if(saldoKreator < 50000) {
-  wdButton.disabled = true;
-  wdButton.innerText = 'Saldo Belum 50rb Koin';
 }
 
-function wdKreator() {
-  if(saldoKreator < 50000) return;
-  alert('Request WD ' + saldoKreator.toLocaleString('id-ID') + ' Koin = Rp ' + saldoKreator.toLocaleString('id-ID') + ' dikirim. Admin transfer H+3 kerja');
-  localStorage.setItem('clikcoin_saldo', '0');
-  saldoKreator = 0;
-  saldoEl.innerText = '0';
-  wdButton.disabled = true;
-  wdButton.innerText = 'Saldo Belum 50rb Koin';
+// ===== PANEL ADMIN TAMBAH VIDEO =====
+function bukaAdmin() {
+  document.getElementById('adminPanel').style.display = 'block';
+  tampilDaftarVideo();
+}
+function tutupAdmin() {
+  document.getElementById('adminPanel').style.display = 'none';
+}
+function tambahVideo() {
+  let input = document.getElementById('inputVideo').value.trim();
+  if(!input.includes('.mp4')) {
+    alert('Link harus .mp4 gob');
+    return;
+  }
+  daftarVideo.push(input);
+  localStorage.setItem('clikcoin_videos', JSON.stringify(daftarVideo));
+  alert('Video ditambah! Refresh halaman');
+  location.reload();
+}
+function tampilDaftarVideo() {
+  let div = document.getElementById('daftarVideo');
+  div.innerHTML = daftarVideo.map((v,i) => `<p>${i+1}. ${v.split(' | ')[1]}</p>`).join('');
+}
+
+// ===== VIP BEBAS IKLAN =====
+function upgradeVip() {
+  if(confirm('Beli VIP 15.000 Koin biar gak ada iklan 30 hari?')) {
+    localStorage.setItem('clikcoin_vip', 'true');
+    localStorage.setItem('clikcoin_expired', Date.now() + 30*24*60*60*1000);
+    location.reload();
+  }
+}
+
+// Cek VIP expired
+let expired = localStorage.getItem('clikcoin_expired');
+if(expired && Date.now() > parseInt(expired)) {
+  localStorage.removeItem('clikcoin_vip');
+  localStorage.removeItem('clikcoin_expired');
+  isVip = false;
 }
 </script>
 </body>
