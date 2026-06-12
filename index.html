@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>ClikCoin</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; color:white; font-family:-apple-system, sans-serif; overflow:hidden; }
+.page { display:none; height:100vh; width:100vw; }
+.page.active { display:block; }
+
+/* === BERANDA / VIDEO === */
+.top-nav { position:fixed; top:0; width:100%; height:48px; background:rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:space-around; z-index:10; font-size:17px; }
+.top-nav span { opacity:0.5; }
+.top-nav span.active { opacity:1; font-weight:600; border-bottom:2px solid white; padding-bottom:5px; }
+.live-btn { background:red; padding:3px 6px; border-radius:4px; font-size:11px; font-weight:bold; }
+.feed { height:100vh; overflow-y:scroll; scroll-snap-type:y mandatory; }
+.video-item { height:100vh; width:100vw; position:relative; scroll-snap-align:start; background:#000; }
+video { width:100%; height:100%; object-fit:cover; }
+.right-icons { position:absolute; right:12px; bottom:120px; display:flex; flex-direction:column; align-items:center; gap:28px; z-index:5; }
+.profile-pic { width:47px; height:47px; border-radius:50%; border:2px solid white; background:#333; position:relative; }
+.profile-pic .plus { position:absolute; bottom:-6px; left:50%; transform:translateX(-50%); background:#fe2c55; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; }
+.icon-item { text-align:center; font-size:26px; }
+.icon-item p { font-size:11px; margin-top:4px; font-weight:600; }
+.desc { position:absolute; bottom:90px; left:15px; right:75px; z-index:5; }
+.desc h3 { font-size:16px; margin-bottom:6px; }
+.desc p { font-size:14px; }
+.ad-box { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.95); color:gold; padding:30px; border-radius:20px; text-align:center; font-size:22px; z-index:999; display:none; border:2px solid gold; }
+
+/* === PROFIL === */
+.profil-wrap { background:#000; padding-bottom:70px; overflow-y:auto; height:100vh; }
+.profil-header { padding:15px; display:flex; justify-content:space-between; }
+.profil-top { text-align:center; padding:0 15px; }
+.avatar { width:90px; height:90px; border-radius:50%; background:#333; margin:0 auto 10px; position:relative; }
+.avatar .plus { position:absolute; bottom:0; right:0; background:#00f2ea; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; }
+.username { font-size:20px; font-weight:600; }
+.userid { font-size:14px; color:#aaa; margin:4px 0; }
+.stats { display:flex; justify-content:center; gap:30px; margin:15px 0; }
+.stat h3 { font-size:18px; }
+.stat p { font-size:12px; color:#aaa; }
+.affiliate-box { margin:15px; background:#111; padding:15px; border-radius:12px; display:flex; justify-content:space-between; }
+.product-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:0 8px; }
+.product { background:#111; border-radius:8px; overflow:hidden; }
+.product img { width:100%; aspect-ratio:1/1; object-fit:cover; }
+.product-info { padding:8px; }
+.price { color:#fe2c55; font-size:15px; font-weight:600; }
+
+/* === STUDIO === */
+.studio-wrap { background:#f5f5f5; color:#000; padding-bottom:70px; overflow-y:auto; height:100vh; }
+.studio-header { background:white; padding:15px; text-align:center; font-weight:bold; border-bottom:1px solid #ddd; }
+.studio-tabs { display:flex; background:white; border-bottom:1px solid #ddd; }
+.tab { flex:1; text-align:center; padding:12px; font-weight:600; }
+.tab.active { border-bottom:3px solid #000; }
+.card { background:white; padding:15px; border-radius:12px; margin:15px; }
+.stats { display:flex; justify-content:space-between; text-align:center; }
+.mono-box { background:linear-gradient(135deg, #ff6b9d, #ff8fab); color:white; padding:20px; border-radius:15px; margin-bottom:12px; }
+.btn-white { background:white; color:#ff4d7e; border:none; padding:8px 20px; border-radius:20px; font-weight:bold; }
+.grid4 { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px; }
+.grid4 div { background:white; padding:15px 5px; border-radius:10px; text-align:center; font-size:11px; }
+
+/* === MENU BAWAH === */
+.bottom-nav { position:fixed; bottom:0; width:100%; height:52px; background:rgba(0,0,0,0.95); display:flex; justify-content:space-around; align-items:center; z-index:100; border-top:1px solid #222; }
+.nav-btn { background:none; border:none; color:#888; text-align:center; font-size:10px; }
+.nav-btn.active { color:white; }
+.nav-btn .icon { font-size:24px; display:block; }
+.plus-btn { background:linear-gradient(45deg, #00f2ea, #fe2c55); width:46px; height:28px; border-radius:8px; font-size:22px; font-weight:bold; color:white; }
+.saldo-top { position:fixed; top:55px; right:10px; background:gold; color:#000; padding:5px 10px; border-radius:15px; font-size:12px; font-weight:bold; z-index:999; }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: BERANDA -->
+<div id="beranda" class="page active">
+  <div class="top-nav">
+    <span class="live-btn">LIVE</span>
+    <span>Nabire</span>
+    <span>Teman</span>
+    <span>Mengikuti</span>
+    <span class="active">Saran</span>
+    <span>🔍</span>
+  </div>
+  <div id="saldoTop" class="saldo-top">💰 <span id="saldo">0</span></div>
+  
+  <div class="feed" id="feed"></div>
+  
+  <div class="ad-box" id="adBox">
+    <p>📢 CLIKCOIN ADS</p>
+    <p>Skip <span id="detik">5</span> detik</p>
+    <small>Kreator +30 Koin</small>
+  </div>
+</div>
+
+<!-- PAGE 2: PROFIL -->
+<div id="profil" class="page">
+  <div class="profil-wrap">
+    <div class="profil-header">
+      <span>👤+</span>
+      <span>⚽</span>
+      <span>⋯</span>
+    </div>
+    <div class="profil-top">
+      <div class="avatar"><div class="plus">+</div></div>
+      <div class="username">viuyg <span style="background:#222; padding:2px 6px; border-radius:10px; font-size:12px;">9+</span></div>
+      <div class="userid">@g6tggt4</div>
+      <button style="background:#222; border:none; color:white; padding:6px 20px; border-radius:8px; margin-top:10px;">Edit Profil</button>
+      <div class="stats">
+        <div class="stat"><h3>7.715</h3><p>Mengikuti</p></div>
+        <div class="stat"><h3>4.581</h3><p>Pengikut</p></div>
+        <div class="stat"><h3>8</h3><p>Suka</p></div>
+      </div>
+      <div style="margin:10px 0;">Uuh</div>
+      <div style="color:#00f2ea;" onclick="showPage('studio')">⭐ ClikCoin Studio | 🛍️ Showcase</div>
+    </div>
+    <div class="affiliate-box">
+      <span>🏪 Affiliate Center</span><span>></span>
+    </div>
+    <div class="product-grid">
+      <div class="product">
+        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400" alt="">
+        <div class="product-info">
+          <div style="font-size:12px; height:32px; overflow:hidden;">(Free Kaos Kaki) Sepatu Pria Formal...</div>
+          <div><span class="price">Rp30.400</span> <span style="text-decoration:line-through; color:#777; font-size:11px;">Rp121.600</span></div>
+          <div style="font-size:11px; color:#aaa;">4.5 ⭐ | 115.8K terjual</div>
+        </div>
+      </div>
+      <div class="product">
+        <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=400" alt="">
+        <div class="product-info">
+          <div style="font-size:12px; height:32px; overflow:hidden;">Sepatu Sendal Pria Wa...</div>
+          <div><span class="price">Rp9.199</span> <span style="text-decoration:line-through; color:#777; font-size:11px;">Rp183.980</span></div>
+          <div style="font-size:11px; color:#aaa;">4.8 ⭐ | 194.8K terjual</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: STUDIO -->
+<div id="studio" class="page">
+  <div class="studio-wrap">
+    <div class="studio-header">← ClikCoin Studio ⚙️</div>
+    <div class="studio-tabs">
+      <div class="tab active">Postingan</div>
+      <div class="tab">LIVE</div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:15px;">Analitik ></h3>
+      <div class="stats">
+        <div><h4>432</h4><p>Tayangan</p></div>
+        <div><h4>-3</h4><p>Pengikut</p></div>
+        <div><h4>9</h4><p>Suka</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:15px;">Monetisasi ></h3>
+      <div class="mono-box">
+        <h4>🛍️ ClikCoin Shop</h4>
+        <p>Dapatkan koin untuk jualan produk...</p>
+        <button class="btn-white">Lihat detail</button>
+      </div>
+      <div class="mono-box" style="background:linear-gradient(135deg, #a18cd1, #fbc2eb);">
+        <h4>🎵 Kerja Sama Brand</h4>
+        <p>Buat postingan sponsor dapet koin...</p>
+        <button class="btn-white">Lihat detail</button>
+      </div>
+      <div class="grid4">
+        <div>📹<br>Insentif LIVE</div>
+        <div>🎖️<br>Misi Brand</div>
+        <div>🛍️<br>Marketplace</div>
+        <div onclick="alert('WD min 1000 koin\nSaldo: '+saldo)">🎁<br>Penarikan</div>
+      </div>
+      <div style="text-align:center; margin-top:20px;">
+        <h2>💰 Saldo: <span id="saldo2">0</span> Koin</h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MENU BAWAH -->
+<div class="bottom-nav">
+  <button class="nav-btn active" onclick="showPage('beranda')"><span class="icon">🏠</span>Beranda</button>
+  <button class="nav-btn"><span class="icon">🛍️</span>Toko</button>
+  <button class="nav-btn plus-btn" onclick="tambahVideo()">+</button>
+  <button class="nav-btn"><span class="icon">📥</span>Kotak Masuk</button>
+  <button class="nav-btn" onclick="showPage('profil')"><span class="icon">👤</span>Profil</button>
+</div>
+
+<script>
+let videos = [
+  'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4 | 懂Hzeelth`Demonic | Xiaoxiao gerakan 3000 petir #donghua #fyp'
+];
+let saldo = parseInt(localStorage.getItem('clikcoin_saldo') || '0');
+let videoKe = 0;
+
+// Fungsi ganti halaman
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  event.target.closest('.nav-btn').classList.add('active');
+  updateSaldo();
+}
+
+// Load video
+function loadFeed() {
+  let feed = document.getElementById('feed');
+  feed.innerHTML = '';
+  videos.forEach(v => {
+    let [link, judul, desc] = v.split(' | ');
+    feed.innerHTML += `
+      <div class="video-item">
+        <video src="${link}" playsinline loop muted></video>
+        <div class="right-icons">
+          <div class="profile-pic"><div class="plus">+</div></div>
+          <div class="icon-item">❤️<p>18,6 rb</p></div>
+          <div class="icon-item">💬<p>245</p></div>
+          <div class="icon-item">🔖<p>1.046</p></div>
+          <div class="icon-item">↗️<p>195</p></div>
+        </div>
+        <div class="desc"><h3>${judul}</h3><p>${desc}</p></div>
+      </div>
+    `;
+  });
+}
+loadFeed();
+
+// Autoplay + iklan
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting) {
+      document.querySelectorAll('video').forEach(v => v.pause());
+      entry.target.play();
+      videoKe++;
+      if(videoKe % 3 === 0) munculIklan();
+    } else {
+      entry.target.pause();
+    }
+  });
+}, { threshold: 0.7 });
+setTimeout(() => document.querySelectorAll('video').forEach(v => observer.observe(v)), 500);
+
+function munculIklan() {
+  let ad = document.getElementById('adBox');
+  ad.style.display = 'block';
+  let d = 5;
+  document.getElementById('detik').innerText = d;
+  let t = setInterval(() => {
+    d--;
+    document.getElementById('detik').innerText = d;
+    if(d < 0) {
+      clearInterval(t);
+      ad.style.display = 'none';
+      saldo += 30;
+      localStorage.setItem('clikcoin_saldo', saldo);
+      updateSaldo();
+    }
+  }, 1000);
+}
+
+function updateSaldo() {
+  document.getElementById('saldo').innerText = saldo;
+  document.getElementById('saldo2').innerText = saldo;
+}
+
+function tambahVideo() {
+  let baru = prompt('Format: link.mp4 | Judul | Deskripsi #tag');
+  if(baru && baru.includes('.mp4')) {
+    videos.unshift(baru);
+    location.reload();
+  }
+}
+updateSaldo();
+</script>
+</body>
+</html>
