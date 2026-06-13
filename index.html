@@ -1,126 +1,214 @@
- <!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>ClikCoin</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { background:#000; color:white; font-family:sans-serif; overflow:hidden; }
-.video-item { height:100vh; width:100vw; position:relative; background:#000; }
-video { width:100%; height:100%; object-fit:cover; }
-.right-icons { position:absolute; right:12px; bottom:120px; display:flex; flex-direction:column; align-items:center; gap:28px; z-index:5; }
-.profile-pic { width:47px; height:47px; border-radius:50%; border:2px solid white; background:#333; position:relative; }
-.profile-pic .plus { position:absolute; bottom:-6px; left:50%; transform:translateX(-50%); background:#fe2c55; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; }
-.icon-item { text-align:center; font-size:26px; }
-.icon-item p { font-size:11px; margin-top:4px; font-weight:600; }
-.desc { position:absolute; bottom:90px; left:15px; right:75px; z-index:5; }
-.desc h3 { font-size:16px; margin-bottom:6px; }
-.desc p { font-size:14px; }
+ <!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>ClikCoin</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,sans-serif;-webkit-tap-highlight-color:transparent}body{background:#f5f5f7;padding-bottom:80px}.page{display:none}.page.active{display:block}.wrap{max-width:430px;margin:0 auto}.top{background:linear-gradient(135deg,#1976d2,#42a5f5);color:#fff;text-align:center;padding:18px;font-size:18px;font-weight:800;position:sticky;top:0;z-index:10}.saldo{background:linear-gradient(135deg,#fff8e1,#ffecb3);margin:15px;padding:24px;border-radius:20px;border:1px solid #ffe082}.saldo small{font-size:12px;color:#e65100;font-weight:600}.saldo h1{font-size:34px;font-weight:800;margin:10px 0 18px 0}.btn{background:#ffca28;border:none;width:100%;padding:16px;border-radius:16px;font-weight:800;font-size:15px;color:#000;cursor:pointer;transition:0.2s}.btn:active{transform:scale(0.97)}.card{background:#fff;margin:15px;padding:20px;border-radius:18px;border:1px solid #e0e0e0}#grafik{width:100%;height:180px;display:block}.stats{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin:15px}.box{background:#fff;padding:16px 5px;border-radius:16px;text-align:center;border:1px solid #e0e0e0}.box h2{font-size:19px;color:#1976d2;font-weight:800;margin-bottom:2px}.box p{font-size:10px;color:#777}.syarat{background:#e8f5e9;margin:15px;padding:20px;border-radius:18px;border:1.5px solid #81c784}.syarat h3{font-size:15px;color:#2e7d32;font-weight:800;margin-bottom:12px}.syarat ul{list-style:none}.syarat li{font-size:13px;color:#424242;margin:8px 0;padding-left:24px;position:relative;line-height:1.5}.syarat li:before{content:'✓';position:absolute;left:0;color:#4caf50;font-weight:800;font-size:14px}.syarat.lock{color:#d32f2f}.syarat.lock:before{content:'✕';color:#d32f2f}.info{background:#e3f2fd;margin:15px;padding:20px;border-radius:18px;border:1px solid #bbdefb}.info h3{font-size:15px;color:#0d47a1;font-weight:800;margin-bottom:12px}.row{display:flex;justify-content:space-between;font-size:13px;margin:8px 0;font-weight:600}
 
-/* MENU BAWAH */
-.bottom-nav { position:fixed; bottom:0; width:100%; height:60px; background:rgba(0,0,0,0.95); display:flex; justify-content:space-around; align-items:center; z-index:100; border-top:1px solid #222; }
-.nav-btn { background:none; border:none; color:#888; text-align:center; font-size:11px; }
-.nav-btn .icon { font-size:26px; display:block; margin-bottom:2px; }
-.plus-btn { background:linear-gradient(45deg, #00f2ea, #fe2c55); width:50px; height:32px; border-radius:10px; font-size:24px; font-weight:bold; color:white; border:none; }
+/* NAV 4 KOLOM */
+.nav{position:fixed;bottom:0;left:0;width:100%;height:70px;background:#fff;display:flex;justify-content:space-around;align-items:center;border-top:2px solid #ddd;z-index:9999;max-width:430px;left:50%;transform:translateX(-50%);box-shadow:0 -4px 12px rgba(0,0,0,0.1)}.nav-btn{text-align:center;font-size:9px;color:#999;cursor:pointer;flex:1;padding:8px 0;user-select:none}.nav-btn.active{color:#1976d2;font-weight:700}.nav-btn span{font-size:24px;display:block;margin-bottom:3px;pointer-events:none}
 
-/* POPUP UPDATE VIDEO - INI KUNCINYA GOB */
-#popup { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; display:none; align-items:center; justify-content:center; }
-.popup-box { background:#1a1a1a; padding:25px; border-radius:15px; width:90%; max-width:400px; border:2px solid #fe2c55; }
-.popup-box h3 { margin-bottom:15px; text-align:center; color:#fe2c55; }
-.popup-box input { width:100%; padding:14px; margin:8px 0; background:#333; border:1px solid #555; color:white; border-radius:8px; font-size:16px; }
-.popup-box button { width:48%; padding:14px; border:none; border-radius:8px; font-weight:bold; font-size:16px; margin-top:12px; }
-.btn-batal { background:#555; color:white; }
-.btn-simpan { background:#fe2c55; color:white; }
-</style>
-</head>
-<body>
+.upload-box{text-align:center;padding:40px 20px;background:#fff;margin:15px;border-radius:18px}.upload-box input{width:100%;padding:15px;margin:15px 0;border:2px dashed #1976d2;border-radius:14px;background:#e3f2fd;font-size:14px}.profil-box{background:#fff;margin:15px;padding:25px;border-radius:18px;text-align:center}
 
-<!-- VIDEO UTAMA -->
-<div class="video-item" id="videoBox">
-  <video id="vid" src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" autoplay loop muted playsinline></video>
-  
-  <div class="right-icons">
-    <div class="profile-pic"><div class="plus">+</div></div>
-    <div class="icon-item">❤️<p>18,6 rb</p></div>
-    <div class="icon-item">💬<p>245</p></div>
-    <div class="icon-item">🔖<p>1.046</p></div>
-    <div class="icon-item">↗️<p>195</p></div>
-  </div>
-  
-  <div class="desc">
-    <h3 id="judul">懂Hzeelth`Demonic</h3>
-    <p id="deskripsi">Xiaoxiao gerakan 3000 petir #donghua #fyp</p>
-  </div>
+/* HALAMAN WALLET BARU */
+.wallet-card{background:linear-gradient(135deg,#1976d2,#42a5f5);color:#fff;margin:15px;padding:25px;border-radius:20px;text-align:center}.wallet-card h2{font-size:32px;margin:10px 0;font-weight:800}.riwayat{background:#fff;margin:15px;padding:20px;border-radius:18px;border:1px solid #e0e0e0}.riwayat h3{font-size:15px;color:#555;margin-bottom:15px;font-weight:700}.item-riwayat{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:13px}.item-riwayat:last-child{border:0}.status-success{color:#2e7d32;font-weight:700}.status-pending{color:#ff9800;font-weight:700}
+
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:none;justify-content:center;align-items:center;z-index:10000}.box2{background:#fff;padding:28px;border-radius:22px;width:88%;max-width:380px}.box2 h3{text-align:center;color:#1976d2;margin-bottom:15px;font-size:18px}.box2 input{width:100%;padding:15px;margin:8px 0;background:#f5f5f5;border:1.5px solid #ddd;border-radius:14px;font-size:15px}.btn2{width:100%;padding:16px;border:none;border-radius:16px;font-weight:800;cursor:pointer;margin-top:12px;font-size:15px}.green{background:linear-gradient(135deg,#43a047,#66bb6a);color:#fff}.gray{background:#e0e0e0;color:#333}</style></head><body>
+
+<!-- HALAMAN BERANDA -->
+<div class="page active" id="pageHome"><div class="wrap"><div class="top">ClikCoin Creator</div>
+<div class="saldo"><small>💰 Pendapatan Iklan Video 45:45</small><h1 id="saldo">Rp 15,761,700</h1><button class="btn" onclick="showPage('pageWallet')">💸 Lihat Wallet</button></div>
+<div class="card"><h3>Grafik Views 5 Hari Terakhir</h3><canvas id="grafik"></canvas></div>
+<div class="stats"><div class="box"><h2 id="views">2.45M</h2><p>Total Views</p></div><div class="box"><h2 id="followers">215</h2><p>Followers</p></div><div class="box"><h2 id="ads">54.3K</h2><p>Iklan Ditonton</p></div><div class="box"><h2>Rp 45</h2><p>RPM</p></div></div>
+<div class="syarat"><h3>📋 Syarat Monetisasi Iklan Video</h3><ul>
+<li>Min 1.000 Views total</li>
+<li>Min 200 Followers</li>
+<li>Min 50 Iklan ditonton</li>
+<li>Video min 30 detik</li>
+<li class="lock" id="syaratOriginal">Video orisinal 100%</li>
+<li>Min saldo Rp 10.000 WD</li>
+</ul><p style="font-size:11px;color:#666;margin-top:12px">* Upload 1 video biar syarat orisinal ✓ hijau</p></div></div></div>
+
+<!-- HALAMAN UPLOAD -->
+<div class="page" id="pageUpload"><div class="wrap"><div class="top">Upload Video Baru</div><div class="upload-box"><h3>📹 Upload Video.mp4</h3><p style="color:#666;margin:15px 0;font-size:14px">Pastikan video bikinan sendiri</p><input type="file" id="fileVideo" accept="video/mp4"><button class="btn" id="btnUpload">UPLOAD & VERIFIKASI ORISINAL</button></div></div></div>
+
+<!-- HALAMAN WALLET BARU -->
+<div class="page" id="pageWallet"><div class="wrap"><div class="top">Wallet ClikCoin</div>
+<div class="wallet-card"><small>Saldo Tersedia</small><h2 id="saldoWallet">Rp 15,761,700</h2><p style="font-size:12px;opacity:0.9;margin-top:8px">Pendapatan Iklan Video 45:45</p><button class="btn" id="tarik" style="background:#fff;color:#1976d2;margin-top:15px">💸 Tarik Tunai Sekarang</button></div>
+<div class="riwayat"><h3>📜 Riwayat Penarikan</h3>
+<div id="listRiwayat">
+<div class="item-riwayat"><div><b>WD ke DANA</b><br><small style="color:#999">15 Apr 2026 21:15</small></div><div><b>Rp 100.000</b><br><span class="status-success">Berhasil</span></div></div>
+<div class="item-riwayat"><div><b>WD ke OVO</b><br><small style="color:#999">10 Apr 2026 14:30</small></div><div><b>Rp 250.000</b><br><span class="status-success">Berhasil</span></div></div>
+</div>
+<p style="text-align:center;color:#999;font-size:12px;margin-top:15px">Riwayat 30 hari terakhir</p>
+</div></div></div>
+
+<!-- HALAMAN PROFIL -->
+<div class="page" id="pageProfil"><div class="wrap"><div class="top">Profil Creator</div><div class="profil-box"><div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#1976d2,#42a5f5);margin:0 auto 15px;display:flex;align-items:center;justify-content:center;font-size:36px;color:#fff">👤</div><h3>Creator ClikCoin</h3><p style="color:#666;margin:10px 0">Followers: <b id="followersProfil">215</b></p><p style="color:#666">Status: <b id="statusOriginal" style="color:#d32f2f">Belum Verifikasi</b></p><p style="color:#666">Total Pendapatan Iklan:</p><h2 style="color:#1976d2;font-size:28px" id="saldoProfil">Rp 15,761,700</h2></div></div></div>
+
+<!-- NAV 4 MENU -->
+<div class="nav">
+<div class="nav-btn active" data-page="pageHome"><span>🏠</span>Beranda</div>
+<div class="nav-btn" data-page="pageUpload"><span>📹</span>Upload</div>
+<div class="nav-btn" data-page="pageWallet"><span>💳</span>Wallet</div>
+<div class="nav-btn" data-page="pageProfil"><span>👤</span>Profil</div>
 </div>
 
-<!-- POPUP UPDATE VIDEO -->
-<div id="popup">
-  <div class="popup-box">
-    <h3>📤 UPDATE VIDEO BARU</h3>
-    <input type="text" id="inputLink" placeholder="1. Tempel link .mp4 di sini">
-    <input type="text" id="inputJudul" placeholder="2. Judul video">
-    <input type="text" id="inputDesc" placeholder="3. Deskripsi #tag">
-    <div style="display:flex; gap:10px; margin-top:5px;">
-      <button class="btn-batal" onclick="tutupPopup()">Batal</button>
-      <button class="btn-simpan" onclick="simpanVideo()">Simpan & Ganti</button>
-    </div>
-    <p style="font-size:11px; color:#aaa; margin-top:10px;">Note: Link harus .mp4. Google Drive harus diubah formatnya</p>
-  </div>
-</div>
-
-<!-- MENU BAWAH -->
-<div class="bottom-nav">
-  <button class="nav-btn"><span class="icon">🏠</span>Beranda</button>
-  <button class="nav-btn"><span class="icon">🛍️</span>Toko</button>
-  <button class="plus-btn" onclick="bukaPopup()">+</button>
-  <button class="nav-btn"><span class="icon">📥</span>Kotak Masuk</button>
-  <button class="nav-btn"><span class="icon">👤</span>Profil</button>
-</div>
+<!-- POPUP TARIK DANA -->
+<div class="modal" id="modalWD"><div class="box2"><h3>💸 Tarik Dana Iklan</h3><small style="display:block;text-align:center;color:#777;margin-bottom:14px;font-size:12px">Min Rp 10.000 | Proses 1x24 jam</small><input type="number" id="nom" placeholder="Nominal tarik tunai" inputmode="numeric"><input type="text" id="ew" placeholder="No DANA / OVO / GoPay / Bank"><button class="btn2 green" id="wd">TARIK SEKARANG</button><button class="btn2 gray" id="close">BATAL</button></div></div>
 
 <script>
-// FUNGSI BUKA TUTUP POPUP - INI YG BIKIN BISA KETIK
-function bukaPopup() {
-  document.getElementById('popup').style.display = 'flex';
-  document.getElementById('inputLink').focus(); // langsung aktifin keyboard
-}
-function tutupPopup() {
-  document.getElementById('popup').style.display = 'none';
-}
+// DATA AWAL
+let saldo=15761700,views=2450000,ads=54300,followers=215;
+let sudahUploadOriginal=false;
+let riwayatWD=[];
 
-// FUNGSI GANTI VIDEO
-function simpanVideo() {
-  let link = document.getElementById('inputLink').value.trim();
-  let judul = document.getElementById('inputJudul').value.trim();
-  let desc = document.getElementById('inputDesc').value.trim();
-  
-  if(!link.includes('.mp4')) {
-    alert('Gagal gob! Link harus ada .mp4 nya');
-    return;
-  }
-  
-  // Ganti video + teks
-  document.getElementById('vid').src = link;
-  document.getElementById('judul').innerText = judul || 'Video Baru';
-  document.getElementById('deskripsi').innerText = desc || '#clikcoin';
-  
-  // Simpen ke HP biar gak ilang pas refresh
-  localStorage.setItem('clikcoin_video', link+'|'+judul+'|'+desc);
-  
-  tutupPopup();
-  alert('Berhasil! Video udah ganti gob 🔥');
-}
-
-// LOAD VIDEO TERAKHIR PAS BUKA
-window.onload = function() {
-  let data = localStorage.getItem('clikcoin_video');
-  if(data) {
-    let [link, judul, desc] = data.split('|');
-    document.getElementById('vid').src = link;
-    document.getElementById('judul').innerText = judul;
-    document.getElementById('deskripsi').innerText = desc;
+function rp(n){return'Rp '+n.toLocaleString('id-ID')}
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(n=>n.classList.remove('active'));
+  document.querySelector('[data-page="'+id+'"]').classList.add('active');
+  if(id==='pageHome')setTimeout(drawGrafik,100);
+  if(id==='pageWallet')updateWallet();
+  if(id==='pageProfil'){
+    document.getElementById('saldoProfil').innerText=rp(saldo);
+    document.getElementById('followersProfil').innerText=followers;
+    document.getElementById('statusOriginal').innerText=sudahUploadOriginal?'Terverifikasi ✅':'Belum Verifikasi';
+    document.getElementById('statusOriginal').style.color=sudahUploadOriginal?'#2e7d32':'#d32f2f';
   }
 }
-</script>
-</body>
-</html>
+
+function updateWallet(){
+  document.getElementById('saldoWallet').innerText=rp(saldo);
+  // update riwayat
+  let html='';
+  if(riwayatWD.length===0){
+    html='<p style="text-align:center;color:#999;font-size:13px;padding:20px">Belum ada riwayat WD</p>';
+  }else{
+    riwayatWD.forEach(r=>{
+      html+=`<div class="item-riwayat"><div><b>WD ke ${r.bank}</b><br><small style="color:#999">${r.tanggal}</small></div><div><b>${rp(r.nominal)}</b><br><span class="status-success">Berhasil</span></div></div>`;
+    });
+  }
+  document.getElementById('listRiwayat').innerHTML=html;
+}
+
+// GRAFIK
+function drawGrafik(){
+  let canvas=document.getElementById('grafik');
+  if(!canvas)return;
+  let ctx=canvas.getContext('2d');
+  let parent=canvas.parentElement;
+  let width=parent.clientWidth-40;
+  canvas.width=width;
+  canvas.height=180;
+  let data=[700,1500,2200,1800,2500];
+  let labels=['Sen','Sel','Rab','Kam','Jum'];
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.strokeStyle='#ffca28';
+  ctx.lineWidth=3;
+  ctx.beginPath();
+  let max=Math.max(...data);
+  let paddingLeft=30, paddingRight=20, paddingBottom=25, paddingTop=15;
+  let graphWidth=canvas.width-paddingLeft-paddingRight;
+  let graphHeight=canvas.height-paddingTop-paddingBottom;
+  let stepX=graphWidth/(data.length-1);
+  let points=[];
+  data.forEach((val,i)=>{
+    let x=paddingLeft+i*stepX;
+    let y=paddingTop+graphHeight-(val/max)*graphHeight;
+    points.push({x,y});
+    if(i==0)ctx.moveTo(x,y);
+    else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  points.forEach(p=>{
+    ctx.fillStyle='#ffca28';
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,5,0,6.28);
+    ctx.fill();
+    ctx.strokeStyle='#fff';
+    ctx.lineWidth=2;
+    ctx.stroke();
+  });
+  ctx.fillStyle='#666';
+  ctx.font='12px sans-serif';
+  ctx.textAlign='center';
+  labels.forEach((label,i)=>{
+    ctx.fillText(label,paddingLeft+i*stepX,canvas.height-5);
+  });
+}
+
+function cekSyaratOriginal(){
+  if(sudahUploadOriginal){
+    document.getElementById('syaratOriginal').classList.remove('lock');
+  }
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  setTimeout(drawGrafik,300);
+  cekSyaratOriginal();
+
+  // NAV 4 MENU
+  document.querySelectorAll('.nav-btn').forEach(btn=>{
+    btn.onclick=function(){
+      let page=this.getAttribute('data-page');
+      showPage(page);
+    }
+  });
+
+  // TARIK DANA DARI WALLET
+  document.getElementById('tarik').onclick=function(){
+    let syaratLengkap = views>=1000 && followers>=200 && ads>=50 && saldo>=10000 && sudahUploadOriginal;
+    if(!syaratLengkap){
+      if(!sudahUploadOriginal)return alert('❌ Gagal WD\nSyarat belum lengkap: Upload 1 video orisinal dulu!');
+      return alert('❌ Gagal WD\nBelum memenuhi semua syarat monetisasi!');
+    }
+    document.getElementById('modalWD').style.display='flex';
+  };
+  document.getElementById('close').onclick=function(){
+    document.getElementById('modalWD').style.display='none';
+  };
+  document.getElementById('wd').onclick=function(){
+    let n=parseInt(document.getElementById('nom').value);
+    let e=document.getElementById('ew').value;
+    if(!n||n<10000)return alert('Min tarik Rp 10.000');
+    if(n>saldo)return alert('Saldo kurang: '+rp(saldo));
+    if(!e)return alert('Isi no E-Wallet/Rekening');
+
+    saldo-=n;
+    let bank=e.includes('08')?'DANA':e.includes('OVO')?'OVO':e.includes('Gopay')?'GoPay':'Bank';
+    let tanggal=new Date().toLocaleString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    riwayatWD.unshift({nominal:n,bank:bank,tanggal:tanggal});
+
+    document.getElementById('saldo').innerText=rp(saldo);
+    document.getElementById('saldoProfil').innerText=rp(saldo);
+    document.getElementById('saldoWallet').innerText=rp(saldo);
+    alert('✅ WD Rp '+n.toLocaleString()+' ke '+bank+' BERHASIL!\nDana masuk 1x24 jam');
+    document.getElementById('modalWD').style.display='none';
+    document.getElementById('nom').value='';
+    document.getElementById('ew').value='';
+    updateWallet();
+  };
+
+  // UPLOAD VIDEO
+  document.getElementById('btnUpload').onclick=function(){
+    let f=document.getElementById('fileVideo').files[0];
+    if(!f)return alert('Pilih file video dulu gob');
+    sudahUploadOriginal=true;
+    cekSyaratOriginal();
+    alert('✅ Video "'+f.name+'" berhasil diupload\nStatus: Video Orisinal Terverifikasi ✅');
+    showPage('pageHome');
+  };
+
+  // SIMULASI
+  setInterval(()=>{
+    saldo+=450;
+    views+=10;
+    ads+=1;
+    followers+=1;
+    document.getElementById('saldo').innerText=rp(saldo);
+    document.getElementById('views').innerText=(views/1000000).toFixed(2)+'M';
+    document.getElementById('ads').innerText=(ads/1000).toFixed(1)+'K';
+    document.getElementById('followers').innerText=followers;
+    drawGrafik();
+  },3000);
+});
+
+window.addEventListener('resize',drawGrafik);
+</script></body></html>
