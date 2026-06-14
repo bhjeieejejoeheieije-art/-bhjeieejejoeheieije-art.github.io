@@ -2,349 +2,336 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ClikCoin Creator + Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>ClikCoin Creator</title>
+
+<!-- KODE GOOGLE ADSENSE -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXX" crossorigin="anonymous"></script>
+
 <style>
-    * {margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
-  body {background:#f5f5f5;padding-bottom:70px}
-  .header {background:linear-gradient(135deg,#2196F3 0%,#1976D2 100%);color:#fff;text-align:center;padding:18px;font-size:18px;font-weight:bold;box-shadow:0 2px 5px rgba(0,0,0,0.2)}
-  .page {display:none;padding:15px}
-  .page.active {display:block}
-  .card {background:#fff;border-radius:12px;padding:15px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
-  .card h3 {text-align:center;font-size:16px;margin-bottom:15px}
-  .chart {width:100%;height:180px;background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 180"><polyline points="20,140 80,100 140,60 200,80 260,40" fill="none" stroke="%23FFC107" stroke-width="3"/><circle cx="20" cy="140" r="5" fill="%23FFC107"/><circle cx="80" cy="100" r="5" fill="%23FFC107"/><circle cx="140" cy="60" r="5" fill="%23FFC107"/><circle cx="200" cy="80" r="5" fill="%23FFC107"/><circle cx="260" cy="40" r="5" fill="%23FFC107"/><text x="20" y="165" font-size="12" fill="%23999">Sen</text><text x="80" y="165" font-size="12" fill="%23999">Sel</text><text x="140" y="165" font-size="12" fill="%23999">Rab</text><text x="200" y="165" font-size="12" fill="%23999">Kam</text><text x="260" y="165" font-size="12" fill="%23999">Jum</text></svg>') no-repeat center;background-size:contain}
-  .stats {display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:15px}
-  .stat-box {background:#fff;border-radius:10px;padding:15px 5px;text-align:center;box-shadow:0 2px 5px rgba(0,0,0,0.08)}
-  .stat-box h2 {color:#2196F3;font-size:20px;margin-bottom:3px}
-  .stat-box p {font-size:11px;color:#666}
-  .syarat-box {background:#e8f5e9;border:2px solid #4CAF50;border-radius:12px;padding:15px}
-  .syarat-box h4 {color:#2e7d32;font-size:15px;margin-bottom:12px}
-  .syarat-list {list-style:none;font-size:14px;color:#333}
-  .syarat-list li {margin:8px 0;display:flex;align-items:center}
-  .syarat-list li:before {content:"✓";color:#4CAF50;font-weight:bold;margin-right:8px;font-size:16px}
-  .note {font-size:11px;color:#666;margin-top:10px;font-style:italic;text-align:center}
-  .nav {position:fixed;bottom:0;width:100%;display:flex;background:#fff;border-top:1px solid #ddd;box-shadow:0 -2px 5px rgba(0,0,0,0.05)}
-  .nav-btn {flex:1;text-align:center;padding:8px 0;font-size:10px;color:#999;cursor:pointer}
-  .nav-btn.active {color:#2196F3}
-  .nav-btn span {font-size:24px;display:block;margin-bottom:2px}
-  .btn-verif {background:#2196F3;color:#fff;padding:14px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:15px;display:block;text-align:center;margin-top:15px}
-  .btn-wd {background:#4CAF50;color:#fff;padding:14px;border-radius:10px;border:none;font-weight:bold;font-size:15px;width:100%;margin-top:10px;cursor:pointer}
-  .btn-upload {background:#FF9800;color:#fff;padding:16px;border-radius:10px;border:none;font-weight:bold;font-size:16px;width:100%;margin-top:15px;cursor:pointer}
-  .btn-danger {background:#f44336;color:#fff;padding:8px 12px;border:none;border-radius:6px;font-size:12px;cursor:pointer;margin-left:5px}
-  .btn-warning {background:#FF9800;color:#fff;padding:8px 12px;border:none;border-radius:6px;font-size:12px;cursor:pointer;margin-left:5px}
-  .row {display:flex;justify-content:space-between;margin:12px 0;font-size:14px}
-  .row b {color:#333}
-  .badge {padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold}
-  .badge-danger {background:#ffebee;color:#c62828}
-  .badge-success {background:#e8f5e9;color:#2e7d32}
-  .badge-warning {background:#fff3e0;color:#e65100}
-  .modal {display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;z-index:1000}
-  .modal.active {display:flex}
-  .box2 {background:#fff;padding:20px;border-radius:12px;width:90%;max-width:400px}
-  input, textarea {width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ddd;font-size:15px}
-  .btn2 {padding:12px;border:none;border-radius:8px;margin-top:8px;font-weight:bold;font-size:15px;width:100%;cursor:pointer}
-  .green {background:#4CAF50;color:#fff}
-  .gray {background:#ddd;color:#333}
-  .creator-item {background:#f9f9f9;border-radius:10px;padding:12px;margin-bottom:10px}
-  .creator-head {display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-  .video-item {display:flex;gap:10px;padding:12px;background:#fff;border-radius:8px;margin-bottom:10px;border:1px solid #eee}
-  .video-thumb {width:80px;height:80px;background:#ddd;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:30px}
-  .video-info {flex:1}
-  .video-info h4 {font-size:14px;margin-bottom:4px}
-  .video-info p {font-size:12px;color:#666;margin:2px 0}
-  .admin-badge {display:inline-block;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:bold;margin-right:5px}
-</style><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
-     crossorigin="anonymous"></script>
-</head>
-<body>
+* {margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif}
+body {background:#f5f7fa; padding-bottom:70px}
+.header {background:#2196F3; color:#fff; padding:16px; text-align:center; font-weight:600; font-size:18px; position:sticky; top:0; z-index:100}
 
-<!-- HEADER -->
-<div class="header">ClikCoin Creator</div>
+.page {display:none; padding:16px}
+.page.active {display:block; animation:fadeIn 0.3s}
+@keyframes fadeIn {from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)}}
 
-<!-- 1. DASHBOARD ADMIN - BARU -->
-<div id="pageAdmin" class="page">
-  <div class="card">
-    <h3>📊 Dashboard Admin</h3>
-    <div class="stats">
-      <div class="stat-box"><h2>1,247</h2><p>Total Creator</p></div>
-      <div class="stat-box"><h2>892</h2><p>Terverifikasi</p></div>
-      <div class="stat-box"><h2>23</h2><p>Pelanggaran</p></div>
-      <div class="stat-box"><h2>Rp 45jt</h2><p>Omset Hari Ini</p></div>
-    </div>
-  </div>
+.card-yellow {background:linear-gradient(135deg, #FFF8E1, #FFECB3); border-radius:14px; padding:18px; margin-bottom:14px}
+.card-yellow p {font-size:13px; color:#E65100; margin-bottom:6px}
+.card-yellow h1 {font-size:32px; font-weight:700; color:#222; margin:8px 0}
+.btn-yellow {width:100%; padding:14px; border:none; border-radius:10px; background:#FFC107; color:#222; font-weight:700; font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px}
 
-  <div class="card">
-    <h3>🚨 Video Perlu Review</h3>
-    
-    <div class="creator-item">
-      <div class="creator-head">
-        <b>@user_ahmad12</b>
-        <span class="badge badge-success">Terverifikasi</span>
-      </div>
-      <div class="video-item">
-        <div class="video-thumb">🎬</div>
-        <div class="video-info">
-          <h4>Joget TikTok Remix</h4>
-          <p>Upload: 2 jam lalu | Views: 1.2K</p>
-          <p><span class="admin-badge" style="background:#ffebee;color:#c62828">⚠️ Diduga Tidak Original</span></p>
-          <button class="btn-danger" onclick="alert('Video ditandai: Tidak Original. Pendapatan dibekukan!')">Tandai Tidak Original</button>
-          <button class="btn-warning" onclick="alert('Video ditandai: Pelanggaran Berat! Akun di-suspend')">Tandai Video Porno</button>
-        </div>
-      </div>
-    </div>
+.card {background:#fff; border-radius:14px; padding:16px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h3 {font-size:16px; margin-bottom:14px; color:#222; font-weight:600}
 
-    <div class="creator-item">
-      <div class="creator-head">
-        <b>@siti_creator</b>
-        <span class="badge badge-danger">Belum Verifikasi</span>
-      </div>
-      <div class="video-item">
-        <div class="video-thumb" style="background:#ffebee">🔞</div>
-        <div class="video-info">
-          <h4>Video Sensual Dance</h4>
-          <p>Upload: 5 jam lalu | Views: 5.4K</p>
-          <p><span class="admin-badge" style="background:#ffebee;color:#c62828">🔞 Pelanggaran Berat</span></p>
-          <button class="btn-danger" onclick="alert('Akun @siti_creator di-BAN permanen!')">BAN Akun</button>
-          <button class="btn-warning" onclick="alert('Video dihapus dari sistem')">Hapus Video</button>
-        </div>
-      </div>
-    </div>
+.chart {height:140px; margin:12px 0}
+.chart svg {width:100%; height:100%}
 
-    <div class="creator-item">
-      <div class="creator-head">
-        <b>@budi_vlog</b>
-        <span class="badge badge-success">Terverifikasi</span>
-      </div>
-      <div class="video-item">
-        <div class="video-thumb">🎬</div>
-        <div class="video-info">
-          <h4>Vlog Makan Sore</h4>
-          <p>Upload: 1 hari lalu | Views: 8.7K</p>
-          <p><span class="admin-badge" style="background:#e8f5e9;color:#2e7d32">✓ Aman</span></p>
-          <button class="btn2 green" style="font-size:12px;padding:6px" onclick="alert('Video disetujui')">Setujui</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+.stats {display:grid; grid-template-columns:repeat(4, 1fr); gap:10px}
+.stat-box {background:#fff; border:1px solid #e0e0e0; padding:14px 5px; border-radius:12px; text-align:center}
+.stat-box h2 {color:#2196F3; font-size:18px; font-weight:700; margin-bottom:4px}
+.stat-box p {font-size:12px; color:#666}
 
-<!-- 2. BERANDA CREATOR -->
-<div id="pageBeranda" class="page active">
-  <div class="card">
-    <h3>Grafik Views 5 Hari Terakhir</h3>
-    <div class="chart"></div>
-  </div>
-  <div class="stats">
-    <div class="stat-box"><h2>2.45M</h2><p>Total Views</p></div>
-    <div class="stat-box"><h2>218</h2><p>Followers</p></div>
-    <div class="stat-box"><h2>54.3K</h2><p>Iklan Ditonton</p></div>
-    <div class="stat-box"><h2>Rp 45</h2><p>RPM</p></div>
-  </div>
-  <div class="syarat-box">
-    <h4>📋 Syarat Monetisasi Iklan Video</h4>
-    <ul class="syarat-list">
-      <li>Min 1.000 Views total</li>
-      <li>Min 200 Followers</li>
-      <li>Min 50 Iklan ditonton</li>
-      <li>Video min 30 detik</li>
-      <li>Video orisinal 100%</li>
-      <li>Min saldo Rp 10.000 WD</li>
-    </ul>
-    <p class="note">* Upload 1 video biar syarat orisinal ✓ hijau</p>
-  </div>
-  <a href="https://bhjeieejejoeheieije-art.github.io/verifikasi.html" target="_blank" class="btn-verif">🔒 VERIFIKASI KTP UNTUK WD</a>
-</div>
+.syarat-box {background:#E8F5E9; border-radius:14px; padding:16px; margin-top:12px}
+.syarat-box h4 {color:#2e7d32; margin-bottom:12px; font-size:15px; font-weight:600}
+.syarat-item {display:flex; align-items:center; margin:10px 0; font-size:14px; color:#333}
+.syarat-item:before {content:"✓"; color:#4CAF50; font-weight:bold; margin-right:10px; font-size:18px}
 
-<!-- 3. UPLOAD VIDEO -->
-<div id="pageUpload" class="page">
-  <div class="card">
-    <h3>📤 Upload Video</h3>
-    <button class="btn-upload" onclick="document.getElementById('modalUpload').classList.add('active')">+ Upload Video Baru</button>
-    <p class="note">Video min 30 detik, orisinal 100%</p>
-  </div>
-  <div class="card">
-    <h3>Video Kamu</h3>
-    <div class="video-item">
-      <div class="video-thumb">🎬</div>
-      <div class="video-info">
-        <h4>Video Contoh #1</h4>
-        <p>Views: 15.2K | Iklan: 234 | Status: <span class="badge badge-success">Disetujui</span></p>
-      </div>
-    </div>
-  </div>
-</div>
+.nav {position:fixed; bottom:0; left:0; width:100%; background:#fff; display:flex; border-top:1px solid #e0e0e0; box-shadow:0 -2px 8px rgba(0,0,0,0.06)}
+.nav-btn {flex:1; text-align:center; padding:10px 0; cursor:pointer; color:#9e9e9e; font-size:12px}
+.nav-btn.active {color:#2196F3}
+.nav-btn span {font-size:24px; display:block; margin-bottom:3px}
 
-<!-- 4. WALLET -->
-<div id="pageWallet" class="page">
-  <div class="card">
-    <h3>💳 Wallet</h3>
-    <div class="row"><span>Saldo Tersedia</span><b style="color:#2196F3;font-size:24px">Rp 15.767.100</b></div>
-    <div class="row"><span>Total Pendapatan</span><b>Rp 15.767.100</b></div>
-    <div class="row"><span>WD Bulan Ini</span><b>Rp 0</b></div>
-    <button class="btn-wd" onclick="document.getElementById('modalWD').classList.add('active')">Tarik Dana</button>
-    <p class="note">Min WD Rp 10.000 | Proses 1x24 jam</p>
-  </div>
-</div>
+.btn {width:100%; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg, #4CAF50, #388E3C); color:#fff; font-weight:700; font-size:15px; cursor:pointer; margin-top:10px}
+.btn-wd {background:linear-gradient(135deg, #2196F3, #1976D2)}
+.btn-otp {background:linear-gradient(135deg, #FF9800, #F57C00)}
+.btn-gray {background:#e0e0e0; color:#333}
 
-<!-- 5. PROFIL -->
-<div id="pageProfil" class="page">
-  <div class="card">
-    <h3>👤 Profil Creator</h3>
-    <div class="row"><span>Nama</span><b>Creator ClikCoin</b></div>
-    <div class="row"><span>Followers</span><b>218</b></div>
-    <div class="row"><span>Status Verifikasi</span><b><span id="statusVerif" class="badge badge-danger">Belum Verifikasi</span></b></div>
-    <div class="row"><span>Total Pendapatan</span><b style="color:#4CAF50;font-size:18px">Rp 15.767.100</b></div>
-    <hr style="border:0;border-top:1px solid #eee;margin:15px 0">
-    <a href="https://bhjeieejejoeheieije-art.github.io/verifikasi.html" target="_blank" onclick="setTimeout(()=>{document.getElementById('statusVerif').className='badge badge-success';document.getElementById('statusVerif').innerText='Terverifikasi'},3000)" class="btn-verif">🔒 VERIFIKASI KTP SEKARANG</a>
-  </div>
-</div>
+input, select {width:100%; padding:13px; border:1.5px solid #ddd; border-radius:9px; margin:8px 0; font-size:15px; outline:none}
+input:focus {border-color:#2196F3}
 
-<!-- POPUP UPLOAD VIDEO -->
-<div class="modal" id="modalUpload">
-  <div class="box2">
-    <h3 style="text-align:center;margin-bottom:15px">📤 Upload Video Baru</h3>
-    <input type="file" accept="video/*">
-    <input type="text" placeholder="Judul Video">
-    <textarea rows="3" placeholder="Deskripsi Video"></textarea>
-    <button class="btn2 green" onclick="alert('Video berhasil diupload! Menunggu review admin');document.getElementById('modalUpload').classList.remove('active')">UPLOAD SEKARANG</button>
-    <button class="btn2 gray" onclick="document.getElementById('modalUpload').classList.remove('active')">BATAL</button>
-  </div>
-</div>
+.modal {display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center}
+.modal.active {display:flex}
+.modal-box {background:#fff; width:90%; max-width:400px; padding:22px; border-radius:14px}
 
-<!-- POPUP TARIK DANA -->
-<div class="modal" id="modalWD">
-  <div class="box2">
-    <h3 style="text-align:center;margin-bottom:15px">💸 Tarik Dana Iklan</h3>
-    <input type="number" placeholder="Nominal tarik tunai" inputmode="numeric">
-    <input type="text" placeholder="No DANA / OVO / GoPay / Bank">
-    <button class="btn2 green" onclick="alert('WD Berhasil! Dana akan masuk 1x24 jam');document.getElementById('modalWD').classList.remove('active')">TARIK SEKARANG</button>
-    <button class="btn2 gray" onclick="document.getElementById('modalWD').classList.remove('active')">BATAL</button>
-  </div>
-</div>
+.saldo {text-align:center; font-size:38px; color:#2196F3; font-weight:700; margin:14px 0}
+.avatar {width:85px; height:85px; background:#2196F3; border-radius:50%; margin:0 auto 12px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:38px}
 
-<!-- NAVBAR BAWAH - TAMBAH MENU ADMIN -->
-<div class="nav">
-  <div class="nav-btn" data-page="pageAdmin"><span>🛡️</span>Admin</div>
-  <div class="nav-btn active" data-page="pageBeranda"><span>🏠</span>Beranda</div>
-  <div class="nav-btn" data-page="pageUpload"><span>📹</span>Upload</div>
-  <div class="nav-btn" data-page="pageWallet"><span>💳</span>Wallet</div>
-  <div class="nav-btn" data-page="pageProfil"><span>👤</span>Profil</div>
-</div>
+.badge {padding:5px 12px; border-radius:15px; font-size:12px; font-weight:600; display:inline-block}
+.badge.ok {background:#e8f5e9; color:#2e7d32}
+.badge.merah {background:#ffebee; color:#c62828}
+.badge.pending {background:#fff3e0; color:#e65100}
 
-<script>
-// Pindah halaman
-document.querySelectorAll('.nav-btn').forEach(btn=>{
-  btn.onclick = ()=>{
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
-    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'))
-    document.getElementById(btn.dataset.page).classList.add('active')
-    btn.classList.add('active')
-  }
-})
-</script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ClikCoin Creator + Admin</title>
-<style>
-    * {margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
-  body {background:#f5f5f5;padding-bottom:70px}
-  .header {background:linear-gradient(135deg,#2196F3 0%,#1976D2 100%);color:#fff;text-align:center;padding:18px;font-size:18px;font-weight:bold;box-shadow:0 2px 5px rgba(0,0,0,0.2)}
-  .page {display:none;padding:15px}
-  .page.active {display:block}
-  .card {background:#fff;border-radius:12px;padding:15px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
-  .card h3 {text-align:center;font-size:16px;margin-bottom:15px}
-  .chart {width:100%;height:180px;background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 180"><polyline points="20,140 80,100 140,60 200,80 260,40" fill="none" stroke="%23FFC107" stroke-width="3"/><circle cx="20" cy="140" r="5" fill="%23FFC107"/><circle cx="80" cy="100" r="5" fill="%23FFC107"/><circle cx="140" cy="60" r="5" fill="%23FFC107"/><circle cx="200" cy="80" r="5" fill="%23FFC107"/><circle cx="260" cy="40" r="5" fill="%23FFC107"/><text x="20" y="165" font-size="12" fill="%23999">Sen</text><text x="80" y="165" font-size="12" fill="%23999">Sel</text><text x="140" y="165" font-size="12" fill="%23999">Rab</text><text x="200" y="165" font-size="12" fill="%23999">Kam</text><text x="260" y="165" font-size="12" fill="%23999">Jum</text></svg>') no-repeat center;background-size:contain}
-  .stats {display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:15px}
-  .stat-box {background:#fff;border-radius:10px;padding:15px 5px;text-align:center;box-shadow:0 2px 5px rgba(0,0,0,0.08)}
-  .stat-box h2 {color:#2196F3;font-size:20px;margin-bottom:3px}
-  .stat-box p {font-size:11px;color:#666}
-  .syarat-box {background:#e8f5e9;border:2px solid #4CAF50;border-radius:12px;padding:15px}
-  .syarat-box h4 {color:#2e7d32;font-size:15px;margin-bottom:12px}
-  .syarat-list {list-style:none;font-size:14px;color:#333}
-  .syarat-list li {margin:8px 0;display:flex;align-items:center}
-  .syarat-list li:before {content:"✓";color:#4CAF50;font-weight:bold;margin-right:8px;font-size:16px}
-  .note {font-size:11px;color:#666;margin-top:10px;font-style:italic;text-align:center}
-  .nav {position:fixed;bottom:0;width:100%;display:flex;background:#fff;border-top:1px solid #ddd;box-shadow:0 -2px 5px rgba(0,0,0,0.05)}
-  .nav-btn {flex:1;text-align:center;padding:8px 0;font-size:10px;color:#999;cursor:pointer}
-  .nav-btn.active {color:#2196F3}
-  .nav-btn span {font-size:24px;display:block;margin-bottom:2px}
-  .btn-verif {background:#2196F3;color:#fff;padding:14px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:15px;display:block;text-align:center;margin-top:15px}
-  .btn-wd {background:#4CAF50;color:#fff;padding:14px;border-radius:10px;border:none;font-weight:bold;font-size:15px;width:100%;margin-top:10px;cursor:pointer}
-  .btn-upload {background:#FF9800;color:#fff;padding:16px;border-radius:10px;border:none;font-weight:bold;font-size:16px;width:100%;margin-top:15px;cursor:pointer}
-  .btn-danger {background:#f44336;color:#fff;padding:8px 12px;border:none;border-radius:6px;font-size:12px;cursor:pointer;margin-left:5px}
-  .btn-warning {background:#FF9800;color:#fff;padding:8px 12px;border:none;border-radius:6px;font-size:12px;cursor:pointer;margin-left:5px}
-  .row {display:flex;justify-content:space-between;margin:12px 0;font-size:14px}
-  .row b {color:#333}
-  .badge {padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold}
-  .badge-danger {background:#ffebee;color:#c62828}
-  .badge-success {background:#e8f5e9;color:#2e7d32}
-  .badge-warning {background:#fff3e0;color:#e65100}
-  .modal {display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;z-index:1000}
-  .modal.active {display:flex}
-  .box2 {background:#fff;padding:20px;border-radius:12px;width:90%;max-width:400px}
-  input, textarea {width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ddd;font-size:15px}
-  .btn2 {padding:12px;border:none;border-radius:8px;margin-top:8px;font-weight:bold;font-size:15px;width:100%;cursor:pointer}
-  .green {background:#4CAF50;color:#fff}
-  .gray {background:#ddd;color:#333}
-  .creator-item {background:#f9f9f9;border-radius:10px;padding:12px;margin-bottom:10px}
-  .creator-head {display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-  .video-item {display:flex;gap:10px;padding:12px;background:#fff;border-radius:8px;margin-bottom:10px;border:1px solid #eee}
-  .video-thumb {width:80px;height:80px;background:#ddd;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:30px}
-  .video-info {flex:1}
-  .video-info h4 {font-size:14px;margin-bottom:4px}
-  .video-info p {font-size:12px;color:#666;margin:2px 0}
-  .admin-badge {display:inline-block;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:bold;margin-right:5px}
+.otp-box {display:flex; gap:7px; justify-content:center; margin:14px 0}
+.otp-box input {width:46px; height:52px; text-align:center; font-size:22px; font-weight:700}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">ClikCoin Creator</div>
 
-<!-- 1. DASHBOARD ADMIN - BARU -->
-<div id="pageAdmin" class="page">
-  <div class="card">
-    <h3>📊 Dashboard Admin</h3>
-    <div class="stats">
-      <div class="stat-box"><h2>1,247</h2><p>Total Creator</p></div>
-      <div class="stat-box"><h2>892</h2><p>Terverifikasi</p></div>
-      <div class="stat-box"><h2>23</h2><p>Pelanggaran</p></div>
-      <div class="stat-box"><h2>Rp 45jt</h2><p>Omset Hari Ini</p></div>
-    </div>
-  </div>
+<!-- BERANDA -->
+<div id="Beranda" class="page active">
+<div class="card-yellow">
+<p>💰 Pendapatan Iklan Video 45:45</p>
+<h1 id="saldoBeranda">Rp 15.764.400</h1>
+<button class="btn-yellow" onclick="gantiPage('Wallet', document.querySelectorAll('.nav-btn')[2])">💸 Lihat Wallet</button>
+</div>
 
-  <div class="card">
-    <h3>🚨 Video Perlu Review</h3>
-    
-    <div class="creator-item">
-      <div class="creator-head">
-        <b>@user_ahmad12</b>
-        <span class="badge badge-success">Terverifikasi</span>
-      </div>
-      <div class="video-item">
-        <div class="video-thumb">🎬</div>
-        <div class="video-info">
-          <h4>Joget TikTok Remix</h4>
-          <p>Upload: 2 jam lalu | Views: 1.2K</p>
-          <p><span class="admin-badge" style="background:#ffebee;color:#c62828">⚠️ Diduga Tidak Original</span></p>
-          <button class="btn-danger" onclick="alert('Video ditandai: Tidak Original. Pendapatan dibekukan!')">Tandai Tidak Original</button>
-          <button class="btn-warning" onclick="alert('Video ditandai: Pelanggaran Berat! Akun di-suspend')">Tandai Video Porno</button>
-        </div>
-      </div>
-    </div>
+<div class="card">
+<h3>Grafik Views 5 Hari Terakhir</h3>
+<div class="chart">
+<svg viewBox="0 0 320 120">
+<polyline points="10,95 70,70 130,45 190,60 250,35 310,25"
+fill="none" stroke="#FFC107" stroke-width="3.5" stroke-linecap="round"/>
+<circle cx="10" cy="95" r="4" fill="#FFC107"/>
+<circle cx="70" cy="70" r="4" fill="#FFC107"/>
+<circle cx="130" cy="45" r="4" fill="#FFC107"/>
+<circle cx="190" cy="60" r="4" fill="#FFC107"/>
+<circle cx="250" cy="35" r="4" fill="#FFC107"/>
+<circle cx="310" cy="25" r="4" fill="#FFC107"/>
+<text x="10" y="115" font-size="11" fill="#757575">Sen</text>
+<text x="70" y="115" font-size="11" fill="#757575">Sel</text>
+<text x="130" y="115" font-size="11" fill="#757575">Rab</text>
+<text x="190" y="115" font-size="11" fill="#757575">Kam</text>
+<text x="250" y="115" font-size="11" fill="#757575">Jum</text>
+</svg>
+</div>
 
-    <div class="creator-item">
-      <div class="creator-head">
-        <b>@siti_creator</b>
-        <span class="badge badge-danger">Belum Verifikasi</span>
-      </div>
-      <div class="video-item">
-        <div class="video-thumb" style="background:#ffebee">🔞</div>
-        <div class="video-info">
-          <h4>Video Sensual Dance</h4>
-          <p>Upload: 5 jam lalu | Views:
+<div class="stats">
+<div class="stat-box"><h2>2.45M</h2><p>Total Views</p></div>
+<div class="stat-box"><h2 id="followers">221</h2><p>Followers</p></div>
+<div class="stat-box"><h2>54.3K</h2><p>Iklan Ditonton</p></div>
+<div class="stat-box"><h2>Rp 45</h2><p>RPM</p></div>
+</div>
+</div>
+
+<div class="syarat-box">
+<h4>Syarat Monetisasi Iklan Video</h4>
+<div class="syarat-item">Min 1.000 Views total</div>
+<div class="syarat-item">Min 200 Followers</div>
+<div class="syarat-item">Min 50 Iklan ditonton</div>
+<div class="syarat-item">Video min 30 detik</div>
+</div>
+</div>
+
+<!-- UPLOAD -->
+<div id="Upload" class="page">
+<div class="card">
+<h3>Upload Video Baru</h3>
+<div style="border:2px dashed #2196F3; border-radius:12px; padding:35px; text-align:center; background:#E3F2FD; cursor:pointer" onclick="document.getElementById('fileVideo').click()">
+<p style="font-size:45px">📁</p>
+<p style="font-weight:600">Upload Video.mp4</p>
+<p style="font-size:12px; color:#666; margin-top:6px">Tarik atau klik untuk memilih</p>
+<input type="file" id="fileVideo" accept="video/*" style="display:none" onchange="pilihFile()">
+</div>
+<button class="btn" onclick="uploadVideo()">UPLOAD & VERIFIKASI ORISINAL</button>
+</div>
+
+<div class="card" id="listVideo">
+<h3>Video Saya</h3>
+<p style="text-align:center; color:#999; padding:25px 0">Belum ada video</p>
+</div>
+</div>
+
+<!-- WALLET -->
+<div id="Wallet" class="page">
+<div class="card">
+<h3>Wallet ClikCoin</h3>
+<p style="font-size:13px; color:#666">Saldo Tersedia</p>
+<div class="saldo" id="saldoWallet">Rp 15.764.400</div>
+<p style="text-align:center; font-size:12px; color:#666">Pendapatan Iklan Video 45:45</p>
+<button class="btn btn-wd" onclick="bukaModal('modalWD')">💸 Tarik Tunai Sekarang</button>
+</div>
+
+<div class="card">
+<h3>Riwayat Penarikan</h3>
+<p style="text-align:center; color:#999; padding:25px 0">Belum ada riwayat WD</p>
+<p style="font-size:12px; color:#999">Riwayat 30 hari terakhir</p>
+</div>
+</div>
+
+<!-- PROFIL -->
+<div id="Profil" class="page">
+<div class="card" style="text-align:center">
+<div class="avatar">👤</div>
+<h3>Creator ClikCoin</h3>
+<p style="color:#666; margin:6px 0">Followers: <span id="followersProfil">221</span></p>
+<p>Status: <span id="statusVerif" class="badge merah">Belum Verifikasi</span></p>
+<p style="margin-top:8px">Total Pendapatan: <b id="totalPendapatan">Rp 15.764.400</b></p>
+</div>
+
+<div class="card">
+<h3>Verifikasi Akun OTP</h3>
+<input type="email" id="emailInput" placeholder="Masukkan email @gmail.com">
+<input type="tel" id="hpInput" placeholder="Masukkan nomor 08xxxxxxxxxx">
+<button class="btn btn-otp" onclick="kirimOTP()">Kirim Kode OTP</button>
+
+<div id="otpSection" style="display:none">
+<p style="font-size:13px; color:#666; text-align:center; margin-top:14px">Masukkan 6 digit kode OTP</p>
+<div class="otp-box">
+<input type="number" maxlength="1"><input type="number" maxlength="1">
+<input type="number" maxlength="1"><input type="number" maxlength="1">
+<input type="number" maxlength="1"><input type="number" maxlength="1">
+</div>
+<button class="btn" onclick="verifikasiOTP()">Verifikasi Sekarang</button>
+</div>
+</div>
+</div>
+
+<!-- MODAL WITHDRAW -->
+<div id="modalWD" class="modal">
+<div class="modal-box">
+<h3 style="margin-bottom:16px">Tarik Dana</h3>
+<input type="number" id="jumlahWD" placeholder="Jumlah WD min Rp 10.000">
+<select id="metodeWD">
+<option>Pilih Metode Withdraw</option>
+<option>DANA</option>
+<option>OVO</option>
+<option>GOPAY</option>
+<option>Bank BCA</option>
+<option>Bank Mandiri</option>
+<option>Bank BRI</option>
+</select>
+<input type="text" id="nomorWD" placeholder="Nomor HP/Rekening Tujuan">
+<button class="btn btn-wd" onclick="prosesWD()">Tarik Sekarang</button>
+<button class="btn btn-gray" onclick="tutupModal('modalWD')">Batal</button>
+</div>
+</div>
+
+<!-- NAV BAWAH -->
+<div class="nav">
+<div class="nav-btn active" onclick="gantiPage('Beranda', this)">
+<span>🏠</span>Beranda
+</div>
+<div class="nav-btn" onclick="gantiPage('Upload', this)">
+<span>📤</span>Upload
+</div>
+<div class="nav-btn" onclick="gantiPage('Wallet', this)">
+<span>💳</span>Wallet
+</div>
+<div class="nav-btn" onclick="gantiPage('Profil', this)">
+<span>👤</span>Profil
+</div>
+</div>
+
+<script>
+// DATA
+let saldo = 15764400;
+let followers = 221;
+
+// NAVIGASI
+function gantiPage(id, btn) {
+document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+btn.classList.add('active');
+window.scrollTo(0, 0);
+}
+
+// MODAL
+function bukaModal(id) {
+document.getElementById(id).classList.add('active');
+}
+function tutupModal(id) {
+document.getElementById(id).classList.remove('active');
+}
+
+// UPLOAD
+function pilihFile() {
+let file = document.getElementById('fileVideo').files[0];
+if(file) {
+document.querySelector('#Upload.card p:nth-child(2)').textContent = file.name;
+}
+}
+
+function uploadVideo() {
+let file = document.getElementById('fileVideo').files[0];
+if(!file) {
+alert('Pilih file video dulu gob!');
+return;
+}
+let item = `<div style="padding:12px; border:1px solid #eee; border-radius:10px; margin-top:10px">
+<b>${file.name}</b><br>
+<span class="badge pending">Menunggu Review Admin</span>
+</div>`;
+document.getElementById('listVideo').innerHTML = '<h3>Video Saya</h3>' + item;
+alert('Video "'+file.name+'" berhasil diupload! Review 1x24 jam');
+}
+
+// WITHDRAW
+function prosesWD() {
+let jumlah = parseInt(document.getElementById('jumlahWD').value);
+let metode = document.getElementById('metodeWD').value;
+let nomor = document.getElementById('nomorWD').value;
+
+if(!jumlah || jumlah < 10000 ||!metode || metode == 'Pilih Metode Withdraw' ||!nomor) {
+alert('Isi semua data dengan benar gob!');
+return;
+}
+if(jumlah > saldo) {
+alert('Saldo tidak cukup!');
+return;
+}
+
+saldo -= jumlah;
+updateSaldo();
+alert('WD Rp '+jumlah.toLocaleString('id-ID')+' ke '+metode+' nomor '+nomor+' berhasil diajukan');
+tutupModal('modalWD');
+document.getElementById('jumlahWD').value = '';
+document.getElementById('nomorWD').value = '';
+}
+
+function updateSaldo() {
+let format = 'Rp ' + saldo.toLocaleString('id-ID');
+document.getElementById('saldoBeranda').textContent = format;
+document.getElementById('saldoWallet').textContent = format;
+document.getElementById('totalPendapatan').textContent = format;
+}
+
+// OTP
+function kirimOTP() {
+let email = document.getElementById('emailInput').value;
+let hp = document.getElementById('hpInput').value;
+if(!email.includes('@gmail.com') || hp.length < 10 ||!hp.startsWith('08')) {
+alert('Email harus @gmail.com dan No HP 08xx min 10 digit!');
+return;
+}
+document.getElementById('otpSection').style.display = 'block';
+alert('Kode OTP: 123456 dikirim ke '+email+' & '+hp);
+}
+
+function verifikasiOTP() {
+let inputs = document.querySelectorAll('.otp-box input');
+let otp = Array.from(inputs).map(i => i.value).join('');
+if(otp == '123456') {
+document.getElementById('statusVerif').className = 'badge ok';
+document.getElementById('statusVerif').textContent = 'Terverifikasi';
+alert('Akun berhasil diverifikasi OTP! ✅');
+} else {
+alert('OTP salah gob! Kode bener: 123456');
+}
+}
+
+// OTP auto focus
+document.querySelectorAll('.otp-box input').forEach((input, i, arr) => {
+input.addEventListener('input', () => {
+if(input.value.length == 1 && i < arr.length-1) {
+arr[i+1].focus();
+}
+});
+});
+
+// Update followers biar naik pelan
+setInterval(() => {
+if(followers < 500000) {
+followers += Math.floor(Math.random() * 2);
+document.getElementById('followers').textContent = followers;
+document.getElementById('followersProfil').textContent = followers;
+}
+}, 8000);
+</script>
+
+</body>
+</html>
