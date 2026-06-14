@@ -110,30 +110,48 @@ fill="none" stroke="#FFC107" stroke-width="3.5" stroke-linecap="round"/>
 <div class="syarat-box">
 <h4>Syarat Monetisasi Iklan Video</h4>
 <div class="syarat-item">Min 1.000 Views total</div>
-<div class="syarat-item">Min 200 Followers</div>
+<div class="syarat-item">Min 500 Followers</div>
 <div class="syarat-item">Min 50 Iklan ditonton</div>
 <div class="syarat-item">Video min 30 detik</div>
 </div>
 </div>
 
 <!-- UPLOAD -->
-<div id="Upload" class="page">
-<div class="card">
-<h3>Upload Video Baru</h3>
-<div style="border:2px dashed #2196F3; border-radius:12px; padding:35px; text-align:center; background:#E3F2FD; cursor:pointer" onclick="document.getElementById('fileVideo').click()">
-<p style="font-size:45px">📁</p>
-<p style="font-weight:600">Upload Video.mp4</p>
-<p style="font-size:12px; color:#666; margin-top:6px">Tarik atau klik untuk memilih</p>
-<input type="file" id="fileVideo" accept="video/*" style="display:none" onchange="pilihFile()">
-</div>
-<button class="btn" onclick="uploadVideo()">UPLOAD & VERIFIKASI ORISINAL</button>
-</div>
 
-<div class="card" id="listVideo">
-<h3>Video Saya</h3>
-<p style="text-align:center; color:#999; padding:25px 0">Belum ada video</p>
-</div>
-</div>
+ <div id="Upload" class="page">
+   <div class="card">
+     <h3>Update Video & Foto Galeri</h3>
+     <p style="font-size:12px; color:#666; margin-top:6px">Klik kotak biru untuk buka Galeri HP</p>
+     
+     <div style="border:2px dashed #2196F3;border-radius:12px;padding:30px;text-align:center;background:#e3f2fd;cursor:pointer;margin-top:10px" 
+126     onclick="document.getElementById('mediaInput').click()">
+       <p style="font-size:45px">📁</p>
+       <b>Pilih dari Galeri</b><br>
+      <small>Video MP4 / Foto JPG PNG</small>
+      <input type="file" id="mediaInput" accept="video/*,image/*" multiple style="display:none" onchange="pilihFile()">
+     </div>
+     
+     <div id="preview"></div>
+   </div>
+   
+   <div class="card" id="listVideo">
+    <h3>Video Saya</h3>
+    <p style="text-align:center; color:#999; padding:25px 0">Belum ada video</p>
+   </div>
+ </div>
+ 
+<script>
+143 function pilihFile() {
+144   let files = document.getElementById('mediaInput').files;
+145   let preview = document.getElementById('preview');
+146   preview.innerHTML = '';
+147   for(let file of files) {
+148     let url = URL.createObjectURL(file);
+149     let tag = file.type.startsWith('video') ? 'video' : 'img';
+150     preview.innerHTML += `<div style="margin-top:15px;padding:10px;border:1px solid #4CAF50;border-radius:10px;background:#e8f5e9">✅ ${file.name}<br><${tag} src="${url}" controls style="width:100%;max-height:200px;border-radius:8px;margin-top:5px"></${tag}><button onclick="alert('Berhasil diupdate!')" style="background:#4CAF50;color:white;border:none;padding:10px;border-radius:5px;margin-top:5px;width:100%;font-weight:bold">UPDATE SEKARANG</button></div>`;
+151   }
+152 }
+  153 </script>
 
 <!-- WALLET -->
 <div id="Wallet" class="page">
@@ -334,4 +352,4 @@ document.getElementById('followersProfil').textContent = followers;
 </script>
 
 </body>
-</html>
+ </html>
